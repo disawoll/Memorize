@@ -20,11 +20,6 @@ struct ContentView: View {
                 }
             }
         }
-            
-            
-            
-            
-            
         .foregroundColor(Color.orange)
         .padding()
         // Assaignment 1, Task 5 :: ternary operator

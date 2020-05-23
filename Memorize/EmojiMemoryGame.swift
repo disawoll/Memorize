@@ -19,11 +19,11 @@ class EmojiMemoryGame {
     static func createMemoryGame() -> MemoryGame<String> {
         let emojis = ["🇬🇧","🇺🇸","🇹🇷","🇨🇦","🇯🇵","🇩🇪",
                       "🇳🇴","🇨🇿","🇦🇹","🇭🇺","🇳🇱","🇫🇷",
-                      "🇵🇱","🇧🇷","🇮🇪","🇳🇴","🇧🇪","🇷🇺"]
+                      "🇵🇱","🇧🇷","🇮🇪","🇳🇴","🇧🇪","🇷🇺"].shuffled()
         
         // Assaignment 1, Task 4, Extra Credit 1
         return MemoryGame<String>(numberOfPairsOfCards: Int.random(in: 2...5)) {
-            pairIndex in emojis.shuffled()[pairIndex]
+            pairIndex in emojis[pairIndex]
         }
     }
     

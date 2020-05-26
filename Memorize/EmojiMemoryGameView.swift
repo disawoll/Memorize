@@ -13,16 +13,15 @@ struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
     
     var body: some View {
-        HStack {
-            ForEach(viewModel.cards) { card in
-                CardView(card: card).onTapGesture {
-                    self.viewModel.choose(card: card)
-                }
+        Grid(viewModel.cards) { card in
+            CardView(card: card).onTapGesture {
+                self.viewModel.choose(card: card)
             }
+            .padding(5)
         }
         .foregroundColor(Color.orange)
         .padding()
-//        //  Assaignment 1, Task 5 :: ternary operator
+//        // Assaignment 1, Task 5 :: ternary operator
 //        .font(viewModel.cards.count/2 < 5 ? Font.largeTitle : Font.system(size: 16))
     }
 }
@@ -31,9 +30,7 @@ struct CardView: View {
     var card: MemoryGame<String>.Card
     
     var body: some View {
-        GeometryReader { geometry in
-            self.body(for: geometry.size)
-        }
+        GeometryReader { self.body(for: $0.size) }
     }
     
     func body(for size: CGSize) -> some View {
@@ -43,19 +40,22 @@ struct CardView: View {
                 RoundedRectangle(cornerRadius: cornerRadius).stroke(lineWidth: edgeLineWidth)
                 Text(card.content)
             } else {
-                RoundedRectangle(cornerRadius: cornerRadius).fill()
+                if !card.isMatched {
+                    RoundedRectangle(cornerRadius: cornerRadius).fill()
+                }
             }
         }
-        //  Assaignment 1, Task 3
-        .aspectRatio(2/3, contentMode: .fit)
+//        // Assaignment 1, Task 3
+//        .aspectRatio(2/3, contentMode: .fit)
             .font(Font.system(size: fontSize(for: size)))
     }
     
-    //  MARK: - Drawing Constants
+    // MARK: - Drawing Constants
     
     let cornerRadius: CGFloat = 10
     let edgeLineWidth: CGFloat = 3
     func fontSize(for size: CGSize) -> CGFloat {
+        // "min(CGFloat, CGFloat) -> CGFloat" is a method of CGFloat, returns the lesser of the two values.
         min(size.width, size.height) * 0.75
     }
 }

@@ -11,9 +11,9 @@ import SwiftUI
 
 class EmojiMemoryGame: ObservableObject {
     
-    //  private(set) only class can modify the variable but other things can see it too.
-    //  private only class can read & write
-    //  <Content> is a String in this case.
+    // private(set) only class can modify the variable but other things can see it too.
+    // private only class can read & write
+    // <Content> is a String in this case.
     @Published private var model: MemoryGame<String> = EmojiMemoryGame.createMemoryGame()
    
     static func createMemoryGame() -> MemoryGame<String> {
@@ -21,17 +21,17 @@ class EmojiMemoryGame: ObservableObject {
                       "🇳🇴","🇨🇿","🇦🇹","🇭🇺","🇳🇱","🇫🇷",
                       "🇵🇱","🇧🇷","🇮🇪","🇳🇴","🇧🇪","🇷🇺"].shuffled()
         
-        //  Assaignment 1, Task 4, Extra Credit 1
+        // Assaignment 1, Task 4, Extra Credit 1
         return MemoryGame<String>(numberOfPairsOfCards: Int.random(in: 2...5)) {
             pairIndex in emojis[pairIndex]
         }
     }
     
-    //  MARK: - Access to the Model
+    // MARK: - Access to the Model
     
     var cards: Array<MemoryGame<String>.Card> { model.cards }
     
-    //  MARK: - Intent(s)
+    // MARK: - Intent(s)
     
     func choose(card: MemoryGame<String>.Card) {
         model.choose(card)

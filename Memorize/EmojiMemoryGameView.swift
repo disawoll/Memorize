@@ -13,16 +13,19 @@ struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
     
     var body: some View {
-        Grid(viewModel.cards) { card in
-            CardView(card: card).onTapGesture {
-                self.viewModel.choose(card: card)
+        VStack {
+            Grid(viewModel.cards) { card in
+                CardView(card: card).onTapGesture {
+                    self.viewModel.choose(card: card)
+                }
+                .padding(5)
             }
-            .padding(5)
+            .foregroundColor(Color.orange)
+            .padding()
+            
+            Button("Restart", action: viewModel.restart).padding()
+            Button("Report Theme", action: viewModel.report).padding()
         }
-        .foregroundColor(Color.orange)
-        .padding()
-//        // Assaignment 1, Task 5 :: ternary operator
-//        .font(viewModel.cards.count/2 < 5 ? Font.largeTitle : Font.system(size: 16))
     }
 }
 
@@ -45,9 +48,7 @@ struct CardView: View {
                 }
             }
         }
-//        // Assaignment 1, Task 3
-//        .aspectRatio(2/3, contentMode: .fit)
-            .font(Font.system(size: fontSize(for: size)))
+        .font(Font.system(size: fontSize(for: size)))
     }
     
     // MARK: - Drawing Constants

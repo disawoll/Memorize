@@ -41,7 +41,7 @@ class EmojiMemoryGame: ObservableObject {
     
     func choose(card: MemoryGame<String>.Card) { model.choose(card) }
     
-    func restart() {
+    func newGame() {
         // TODO: Repeat init() code, refactor it.
         let game = EmojiMemoryGame.createMemoryGame()
         self.model = game.0

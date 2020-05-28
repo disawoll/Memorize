@@ -27,10 +27,13 @@ struct EmojiMemoryGameView: View {
                     .font(.largeTitle)
                     .padding()
             }
+            .accentColor(viewModel.theme.accentColor)
+            .foregroundColor(viewModel.theme.accentColor)
+            // Assignment 2 Task 7
             .navigationBarTitle(viewModel.theme.name)
-            .navigationBarItems(trailing: Button("Restart", action: viewModel.restart))
+            // Assignment 2 Task 6
+            .navigationBarItems(trailing: Button("New Game", action: viewModel.newGame))
         }
-        .foregroundColor(viewModel.theme.accentColor)
     }
 }
 
@@ -49,7 +52,13 @@ struct CardView: View {
                 Text(card.content)
             } else {
                 if !card.isMatched {
-                    RoundedRectangle(cornerRadius: cornerRadius).fill()
+                    RoundedRectangle(cornerRadius: cornerRadius).fill(
+                        // Assignment 2 Extra Credit 1
+                        AngularGradient(gradient: Gradient(colors: [Color.white, Color.accentColor, Color.black]),
+                                        center: .bottomLeading,
+                                        startAngle: .degrees(180),
+                                        endAngle: .degrees(400))
+                    )
                 }
             }
         }

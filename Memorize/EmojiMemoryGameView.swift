@@ -63,6 +63,7 @@ struct CardView: View {
             }
         }
         .font(Font.system(size: fontSize(for: size)))
+        // TODO: Fix Aspect Ratio
     }
     
     // MARK: - Drawing Constants

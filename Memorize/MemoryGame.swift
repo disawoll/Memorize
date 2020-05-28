@@ -12,12 +12,13 @@ import Foundation
 struct MemoryGame<CardContent> where CardContent: Equatable{
     var cards: [Card]
     var openedCards = [Card]()
-    var score: Int
+    var score = 0
     
     var indexOfTheOneAndOnlyFaceUpCard: Int? {
         // $0 is the first argument, $1 is the second etc.
         get { cards.indices.filter { cards[$0].isFaceUp }.only }
         set {
+            // turns all other cards face down
             for index in cards.indices {
                 if cards[index].isFaceUp { openedCards.append(cards[index]) }
                 // newValue is a special var only appears inside set {}
@@ -26,29 +27,34 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
         }
     }
     
-    mutating func matchScore() { score += 2 }
-   
-    mutating func mismatchScore() { score -= 1 }
+    mutating func adjustScore(isMatched: Bool) { isMatched ? (score += 2) : (score -= 1) }
     
     mutating func choose(_ card: Card) {
-        if let chosenIndex = cards.firstIndex(matching: card), !cards[chosenIndex].isFaceUp, !cards[chosenIndex].isMatched {
-            if let potentialMatchIndex = indexOfTheOneAndOnlyFaceUpCard {
+        // if let syntax is called optional binding.
+        if let chosenIndex = cards.firstIndex(matching: card), !cards[chosenIndex].isMatched {
+            // only choose cards that are unmatched
+            if let potentialMatchIndex = indexOfTheOneAndOnlyFaceUpCard, potentialMatchIndex != chosenIndex {
+                // can't choose the same card twice
                 if cards[chosenIndex].content == cards[potentialMatchIndex].content {
+                    // here is a match case
                     cards[chosenIndex].isMatched = true
                     cards[potentialMatchIndex].isMatched = true
-                    matchScore()
+                    adjustScore(isMatched: true)
+                } else {
+                    // here is a mismatch case
+                    if (openedCards.firstIndex(matching: cards[chosenIndex]) != nil) { adjustScore(isMatched: false) }
+                    if (openedCards.firstIndex(matching: cards[potentialMatchIndex]) != nil) { adjustScore(isMatched: false) }
                 }
-                self.cards[chosenIndex].isFaceUp = true
+                cards[chosenIndex].isFaceUp = true
             } else {
+                // if there are zero or more than one face up cards
                 indexOfTheOneAndOnlyFaceUpCard = chosenIndex
-                if openedCards.contains(cards[chosenIndex]) { mismatchScore() }
             }
         }
     }
     
     init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
         cards = [Card]()
-        score = 0
         for pairIndex in 0..<numberOfPairsOfCards {
             let content = cardContentFactory(pairIndex)
             cards.append(Card(content: content, id: pairIndex*2))
@@ -59,7 +65,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
         }
     }
     
-    struct Card: Identifiable, Equatable {
+    struct Card: Identifiable {
         var isFaceUp = false
         var isMatched = false
         var content: CardContent

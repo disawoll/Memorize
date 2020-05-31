@@ -13,37 +13,37 @@ public var themes: [Theme] = [
     Theme(name: "Flags",
           setOfEmoji: ["🇬🇧","🇺🇸","🇹🇷","🇨🇦","🇯🇵","🇩🇪","🇳🇴","🇨🇿","🇦🇹",
                        "🇭🇺","🇳🇱","🇫🇷","🇵🇱","🇧🇷","🇮🇪","🇳🇴","🇧🇪","🇷🇺"],
-          accentColor: Color.blue,
+          accentColor: .blue,
           numberOfPairs: 9),
     
     Theme(name: "Food",
           setOfEmoji: ["🍔","🍕","🍝","🧆","🍦","🍿","🍫","🍣","🌮",
                        "🥪","🍗","🥓","🥨","🧀","🍞","🍳","🥞","🥗"],
-          accentColor: Color.green,
+          accentColor: .green,
           numberOfPairs: nil),
     
     Theme(name: "Halloween",
           setOfEmoji: ["👻","🎃","🙀","😈","☠️","💀","🦇","🍭","🕸",
                        "🕷"],
-          accentColor: Color.orange,
+          accentColor: .orange,
           numberOfPairs: nil),
     
     Theme(name: "Places",
           setOfEmoji: ["🏢","🏤","🏥","🏦","🏨","🏪","🏫","🏛","⛪️",
                        "🕌","🕍","🛕","⛩"],
-          accentColor: Color.purple,
+          accentColor: .purple,
           numberOfPairs: nil),
     
     Theme(name: "Vehicles",
           setOfEmoji: ["🚗","🚕","🏎","🚜","🚚","🚆","🚊","🛩","🚀",
                        "🚁","🛸","🚤","⛵️"],
-          accentColor: Color.red,
+          accentColor: .red,
           numberOfPairs: nil),
     
     Theme(name: "Faces",
           setOfEmoji: ["😄","😅","😂","😇","😍","😘","😋","😜","🤓",
                        "😎","🥺","🤬","🤯","🥶","🤢","😷","👽"],
-          accentColor: Color.yellow,
+          accentColor: .yellow,
           numberOfPairs: nil),
 ]
 

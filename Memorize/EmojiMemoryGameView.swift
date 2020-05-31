@@ -21,11 +21,11 @@ struct EmojiMemoryGameView: View {
                     }
                     .padding(5)
                 }
-                .padding()
+                .padding(.horizontal)
                 
                 Text("Score: \(viewModel.score)")
                     .font(.largeTitle)
-                    .padding()
+                    .padding(.bottom)
             }
             .accentColor(viewModel.theme.accentColor)
             .foregroundColor(viewModel.theme.accentColor)

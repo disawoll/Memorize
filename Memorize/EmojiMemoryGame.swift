@@ -10,26 +10,29 @@
 import SwiftUI
 
 class EmojiMemoryGame: ObservableObject {
-    
-    // private(set) only class can modify the variable but other things can see it too.
-    // private only class can read & write
-    // <Content> is a String in this case.
     @Published private var model: MemoryGame<String>
     
-    private(set) var theme: Theme
+    private(set) var theme = themes.randomElement()!
     
     init() {
-        let game = EmojiMemoryGame.createMemoryGame()
-        self.model = game.0
-        self.theme = game.1
+        self.model = EmojiMemoryGame.createMemoryGame(theme: theme)
     }
    
-    static func createMemoryGame() -> (MemoryGame<String>, Theme) {
-        let theme = themes.randomElement()!
+    static func createMemoryGame(theme: Theme) -> (MemoryGame<String>) {
         let emojis = theme.setOfEmoji.shuffled()
         let numberOfPairsOfCards = theme.numberOfPairs ?? Int.random(in: 2...emojis.count)
-        let model = MemoryGame<String>(numberOfPairsOfCards: numberOfPairsOfCards) { emojis[$0] }
-        return (model, theme)
+        return MemoryGame<String>(numberOfPairsOfCards: numberOfPairsOfCards) { emojis[$0] }
+    }
+    
+    private func rendomTheme() {
+        let oldTheme = self.theme
+        var newTheme: Theme
+        
+        repeat {
+            newTheme = themes.randomElement()!
+        } while oldTheme.id == newTheme.id
+        
+        self.theme = newTheme
     }
     
     // MARK: - Access to the Model
@@ -42,9 +45,7 @@ class EmojiMemoryGame: ObservableObject {
     func choose(card: MemoryGame<String>.Card) { model.choose(card) }
     
     func newGame() {
-        // TODO: Repeat init() code, refactor it.
-        let game = EmojiMemoryGame.createMemoryGame()
-        self.model = game.0
-        self.theme = game.1
+        self.rendomTheme()
+        self.model = EmojiMemoryGame.createMemoryGame(theme: theme)
     }
 }

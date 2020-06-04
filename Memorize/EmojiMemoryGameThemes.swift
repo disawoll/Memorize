@@ -9,7 +9,7 @@
 import SwiftUI
 
 // Assignment 2 Task 6
-public let themes: [Theme] = [
+let themes: [Theme] = [
     Theme(
         name: "Flags",
         setOfEmoji: ["🇬🇧", "🇺🇸", "🇹🇷", "🇨🇦", "🇯🇵", "🇩🇪", "🇳🇴", "🇨🇿", "🇦🇹", "🇭🇺", "🇳🇱", "🇫🇷", "🇵🇱", "🇧🇷", "🇮🇪", "🇳🇴", "🇧🇪", "🇷🇺"],
@@ -60,10 +60,10 @@ public let themes: [Theme] = [
 ]
 
 // Assignment 2 Task 3
-public struct Theme: Identifiable {
+struct Theme: Identifiable {
     let name: String
     let setOfEmoji: [String]
     let accentColor: Color
     let numberOfPairs: Int?
-    public let id: Int
+    let id: Int
 }

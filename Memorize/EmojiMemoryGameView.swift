@@ -44,26 +44,21 @@ struct CardView: View {
         GeometryReader { self.body(for: $0.size) }
     }
     
+    @ViewBuilder
     private func body(for size: CGSize) -> some View {
-        ZStack {
-            if card.isFaceUp {
-                RoundedRectangle(cornerRadius: cornerRadius).fill(Color.white)
-                RoundedRectangle(cornerRadius: cornerRadius).stroke(lineWidth: edgeLineWidth)
+        if card.isFaceUp || !card.isMatched {
+            ZStack {
+                Pie(
+                    startAngle: Angle.degrees(0-90),
+                    endAngle: Angle.degrees(110-90),
+                    clockwise: true
+                )
+                .padding(10).opacity(0.4)
                 Text(card.content)
-            } else {
-                if !card.isMatched {
-                    RoundedRectangle(cornerRadius: cornerRadius).fill(
-                        // Assignment 2 Extra Credit 1
-                        AngularGradient(gradient: Gradient(colors: [Color.white, Color.accentColor, Color.black]),
-                                        center: .bottomLeading,
-                                        startAngle: .degrees(180),
-                                        endAngle: .degrees(400))
-                    )
-                }
+                    .font(Font.system(size: fontSize(for: size)))
             }
+            .cardify(isFaceUp: card.isFaceUp)
         }
-        .font(Font.system(size: fontSize(for: size)))
-        // TODO: Fix Aspect Ratio
     }
     
     // MARK: - Drawing Constants
@@ -72,12 +67,14 @@ struct CardView: View {
     private let edgeLineWidth: CGFloat = 3
     private func fontSize(for size: CGSize) -> CGFloat {
         // "min(CGFloat, CGFloat) -> CGFloat" is a method of CGFloat, returns the lesser of the two values.
-        min(size.width, size.height) * 0.75
+        min(size.width, size.height) * 0.7
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        EmojiMemoryGameView(viewModel: EmojiMemoryGame())
+        let game = EmojiMemoryGame()
+        game.choose(card: game.cards[2])
+        return EmojiMemoryGameView(viewModel: game)
     }
 }

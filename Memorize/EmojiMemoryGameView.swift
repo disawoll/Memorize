@@ -17,9 +17,11 @@ struct EmojiMemoryGameView: View {
             VStack {
                 Grid(viewModel.cards) { card in
                     CardView(card: card).onTapGesture {
-                        self.viewModel.choose(card: card)
+                        withAnimation(.linear(duration: self.flipDuration)) {
+                            self.viewModel.choose(card: card)
+                        }
                     }
-                    .padding(5)
+                    .padding(self.gridPadding)
                 }
                 .padding(.horizontal)
                 
@@ -29,12 +31,22 @@ struct EmojiMemoryGameView: View {
             }
             .accentColor(viewModel.theme.accentColor)
             .foregroundColor(viewModel.theme.accentColor)
-            // Assignment 2 Task 7
             .navigationBarTitle(viewModel.theme.name)
-            // Assignment 2 Task 6
-            .navigationBarItems(trailing: Button("New Game", action: viewModel.newGame))
+            .navigationBarItems(trailing:
+                Button("New Game") {
+                    withAnimation(.easeInOut(duration: self.shuffleDuration)) {
+                        self.viewModel.newGame()
+                    }
+                }
+            )
         }
     }
+    
+    // MARK: - Drawing Constants
+    
+    private let flipDuration: Double = 0.75
+    private let shuffleDuration: Double = 1
+    private let gridPadding: CGFloat = 5
 }
 
 struct CardView: View {
@@ -44,32 +56,57 @@ struct CardView: View {
         GeometryReader { self.body(for: $0.size) }
     }
     
-    @ViewBuilder
-    private func body(for size: CGSize) -> some View {
-        if card.isFaceUp || !card.isMatched {
-            ZStack {
-                Pie(
-                    startAngle: Angle.degrees(0-90),
-                    endAngle: Angle.degrees(110-90),
-                    clockwise: true
-                )
-                .padding(10).opacity(0.4)
-                Text(card.content)
-                    .font(Font.system(size: fontSize(for: size)))
-            }
-            .cardify(isFaceUp: card.isFaceUp)
+    @State private var animatedBonusRemaining: Double = 0
+    
+    private func startBonusTimeAnimation() {
+        animatedBonusRemaining = card.bonusRemaining
+        withAnimation(.linear(duration: card.bonusTimeRemaining)) {
+            animatedBonusRemaining = 0
         }
     }
     
-    // MARK: - Drawing Constants
-    
-    private let cornerRadius: CGFloat = 10
-    private let edgeLineWidth: CGFloat = 3
-    private func fontSize(for size: CGSize) -> CGFloat {
-        // "min(CGFloat, CGFloat) -> CGFloat" is a method of CGFloat, returns the lesser of the two values.
-        min(size.width, size.height) * 0.7
+    @ViewBuilder private func body(for size: CGSize) -> some View {
+        if card.isFaceUp || !card.isMatched {
+            Group {
+                ZStack {
+                    if card.isConsumingBonusTime {
+                        Pie(
+                            startAngle: Angle.degrees(startAngle),
+                            endAngle: Angle.degrees(-animatedBonusRemaining*360-90),
+                            clockwise: true
+                        )
+                        .onAppear { self.startBonusTimeAnimation() }
+                    } else {
+                        Pie(
+                            startAngle: Angle.degrees(startAngle),
+                            endAngle: Angle.degrees(-animatedBonusRemaining*360-90),
+                            clockwise: true
+                        )
+                    }
+            }
+            .padding(padding)
+            .opacity(opacity)
+            Text(card.content)
+                .font(Font.system(size: fontSize(for: size)))
+                .rotationEffect(Angle.degrees(card.isMatched ? 360 : 0))
+                .animation(card.isMatched ? Animation.linear(duration: spinningDuration).repeatForever(autoreverses: false) : .default)
+            }
+            .cardify(isFaceUp: card.isFaceUp)
+            .transition(AnyTransition.scale)
+        }
     }
+    
+        // MARK: - Drawing Constants
+        
+    private func fontSize(for size: CGSize) -> CGFloat { min(size.width, size.height) * 0.7 }
+    private let padding: CGFloat = 10
+    private let opacity: Double = 0.4
+    private let startAngle: Double = 0-90
+    //private let endAngle: Double = -animatedBonusRemaining*360-90
+    private let spinningDuration: Double = 1
 }
+
+    // MARK: - SwiftUI Preview
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

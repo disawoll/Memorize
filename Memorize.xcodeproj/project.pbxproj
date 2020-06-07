@@ -96,10 +96,8 @@
 				2BD2025824754FEB00000F94 /* SceneDelegate.swift */,
 				2BD2025A24754FEB00000F94 /* EmojiMemoryGameView.swift */,
 				2B3EA383247589E400D81DDD /* EmojiMemoryGame.swift */,
-				2BD1D673247EE1EA00D734F6 /* EmojiMemoryGameThemes.swift */,
 				2B3EA3812475879800D81DDD /* MemoryGame.swift */,
-				2BED35F72489B9C0000C8303 /* Cardify.swift */,
-				2BED35F52489A916000C8303 /* Pie.swift */,
+				2BD7C758248C456C001D77EF /* Other */,
 				2B36F246247D8FD4004CAD34 /* Grid */,
 				2B36F245247D8FAC004CAD34 /* Extensions */,
 				2BD2025C24754FEE00000F94 /* Assets.xcassets */,
@@ -116,6 +114,16 @@
 				2BD2025F24754FEE00000F94 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		2BD7C758248C456C001D77EF /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				2BD1D673247EE1EA00D734F6 /* EmojiMemoryGameThemes.swift */,
+				2BED35F72489B9C0000C8303 /* Cardify.swift */,
+				2BED35F52489A916000C8303 /* Pie.swift */,
+			);
+			name = Other;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

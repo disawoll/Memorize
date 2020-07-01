@@ -11,19 +11,23 @@ import SwiftUI
 
 struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
-    
     var body: some View {
         NavigationView {
             VStack {
-                Grid(viewModel.cards) { card in
-                    CardView(card: card).onTapGesture {
-                        withAnimation(.linear(duration: self.flipDuration)) {
-                            self.viewModel.choose(card: card)
+                LazyVGrid(columns: columns) {
+                    ForEach(viewModel.cards) { card in
+                        CardView(card: card).onTapGesture {
+                            withAnimation(.linear(duration: flipDuration)) {
+                                viewModel.choose(card: card)
+                            }
                         }
+                        .scaledToFill()
+                        .padding(.vertical)
                     }
-                    .padding(self.gridPadding)
                 }
                 .padding(.horizontal)
+                
+                Spacer()
                 
                 Text("Score: \(viewModel.score)")
                     .font(.largeTitle)
@@ -34,8 +38,8 @@ struct EmojiMemoryGameView: View {
             .navigationBarTitle(viewModel.theme.name)
             .navigationBarItems(trailing:
                 Button("New Game") {
-                    withAnimation(.easeInOut(duration: self.shuffleDuration)) {
-                        self.viewModel.newGame()
+                    withAnimation(.easeInOut(duration: shuffleDuration)) {
+                        viewModel.newGame()
                     }
                 }
             )
@@ -47,13 +51,17 @@ struct EmojiMemoryGameView: View {
     private let flipDuration: Double = 0.75
     private let shuffleDuration: Double = 1
     private let gridPadding: CGFloat = 5
+    private let gridSpacing: CGFloat = 35
+    // TODO: - Column count must be adjustable. 4 is placeholder.
+    private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 4)
+
 }
 
 struct CardView: View {
     var card: MemoryGame<String>.Card
     
     var body: some View {
-        GeometryReader { self.body(for: $0.size) }
+        GeometryReader { body(for: $0.size) }
     }
     
     @State private var animatedBonusRemaining: Double = 0
@@ -75,7 +83,7 @@ struct CardView: View {
                             endAngle: Angle.degrees(-animatedBonusRemaining*360-90),
                             clockwise: true
                         )
-                        .onAppear { self.startBonusTimeAnimation() }
+                        .onAppear { startBonusTimeAnimation() }
                     } else {
                         Pie(
                             startAngle: Angle.degrees(startAngle),
@@ -83,13 +91,15 @@ struct CardView: View {
                             clockwise: true
                         )
                     }
-            }
-            .padding(padding)
-            .opacity(opacity)
-            Text(card.content)
-                .font(Font.system(size: fontSize(for: size)))
-                .rotationEffect(Angle.degrees(card.isMatched ? 360 : 0))
-                .animation(card.isMatched ? Animation.linear(duration: spinningDuration).repeatForever(autoreverses: false) : .default)
+                }
+                .aspectRatio(2/3, contentMode: .fill)
+                .padding(padding)
+                .opacity(opacity)
+            
+                Text(card.content)
+                    .font(Font.system(size: fontSize(for: size)))
+                    .rotationEffect(Angle.degrees(card.isMatched ? 360 : 0))
+                    .animation(card.isMatched ? Animation.linear(duration: spinningDuration).repeatForever(autoreverses: false) : .default)
             }
             .cardify(isFaceUp: card.isFaceUp)
             .transition(AnyTransition.scale)

@@ -15,7 +15,7 @@ class EmojiMemoryGame: ObservableObject {
     private(set) var theme = themes.randomElement()!
     
     init() {
-        self.model = EmojiMemoryGame.createMemoryGame(theme: theme)
+        model = EmojiMemoryGame.createMemoryGame(theme: theme)
     }
    
     private static func createMemoryGame(theme: Theme) -> (MemoryGame<String>) {
@@ -24,15 +24,15 @@ class EmojiMemoryGame: ObservableObject {
         return MemoryGame<String>(numberOfPairsOfCards: numberOfPairsOfCards) { emojis[$0] }
     }
     
-    private func rendomTheme() {
-        let oldTheme = self.theme
+    private func randomTheme() {
+        let oldTheme = theme
         var newTheme: Theme
         
         repeat {
             newTheme = themes.randomElement()!
         } while oldTheme.id == newTheme.id
         
-        self.theme = newTheme
+        theme = newTheme
     }
     
     // MARK: - Access to the Model
@@ -45,7 +45,7 @@ class EmojiMemoryGame: ObservableObject {
     func choose(card: MemoryGame<String>.Card) { model.choose(card) }
     
     func newGame() {
-        self.rendomTheme()
-        self.model = EmojiMemoryGame.createMemoryGame(theme: theme)
+        randomTheme()
+        model = EmojiMemoryGame.createMemoryGame(theme: theme)
     }
 }

@@ -95,7 +95,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
 
         // how long this card has ever face up
         private var faceUptime: TimeInterval {
-            if let lastFaceUpDate = self.lastFaceUpDate {
+            if let lastFaceUpDate = lastFaceUpDate {
                 return pastFaceUpTime + Date().timeIntervalSince(lastFaceUpDate)
             } else {
                 return pastFaceUpTime
@@ -138,7 +138,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
         // called when the card goes back face down (or gets matched)
         private mutating func stopUsingBonusTime() {
             pastFaceUpTime = faceUptime
-            self.lastFaceUpDate = nil
+            lastFaceUpDate = nil
         }
     }
 }

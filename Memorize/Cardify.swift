@@ -50,6 +50,6 @@ struct Cardify: AnimatableModifier {
 
 extension View {
     func cardify(isFaceUp: Bool) -> some View {
-        self.modifier(Cardify(isFaceUp: isFaceUp))
+        modifier(Cardify(isFaceUp: isFaceUp))
     }
 }
